@@ -45,7 +45,7 @@ bool Inamic::intersectieX(sf::FloatRect platforma)
 bool Inamic::intersectieY(sf::FloatRect platforma)
 {
     sf::FloatRect spriteBounds = m_sprite.getGlobalBounds();
-    float yt = spriteBounds.position.y - spriteBounds.size.y - 40.f;
+    float yt = spriteBounds.position.y - spriteBounds.size.y - 20.f;
     float yb = spriteBounds.position.y + spriteBounds.size.y;
     
     float pyt = platforma.position.y;
@@ -68,6 +68,25 @@ void Inamic::onGround()
         }
     }
 }
+void Inamic::inCadere()
+{
+    sf::FloatRect spriteBounds = m_sprite.getGlobalBounds();
+    
+    m_velocity += 0.5f;
+    m_sprite.move({0, m_velocity});
+
+    for(const sf::FloatRect& platforma: Joc::m_platforme)
+        if(this->intersectieX(platforma) && this->intersectieY(platforma)
+           && m_velocity > 0 
+           && spriteBounds.position.y + spriteBounds.size.y / 2.f - m_velocity < platforma.position.y)
+        {
+            m_sprite.setPosition({spriteBounds.position.x + spriteBounds.size.x / 2.f, platforma.position.y - spriteBounds.size.y / 2.f});
+            m_velocity = 0;
+            m_onGround = 1;
+            m_platformaCurenta = platforma;
+            break;
+        }
+}
 bool Inamic::esteLanga(Obiect* obiect)
 {
     sf::FloatRect obBounds = obiect->getSprite().getGlobalBounds();
@@ -83,7 +102,7 @@ void Inamic::mergiLa(Obiect* obiect)
     {
         sf::FloatRect obBounds = obiect->getSprite().getGlobalBounds();
         if(m_platformaCurenta == Joc::m_platforme[5]
-           || (std::abs(spriteBounds.position.y - obBounds.position.y) < m_viteza 
+           || (std::abs(spriteBounds.position.y - obBounds.position.y) < 20.f 
                && spriteBounds.position.x > obBounds.position.x))
         {
             if(spriteBounds.position.x / 2.f > 54.f)
@@ -106,22 +125,7 @@ void Inamic::mergiLa(Obiect* obiect)
         }
     }
     else
-    {
-        m_velocity += 0.5f;
-        m_sprite.move({0, m_velocity});
-
-        for(const sf::FloatRect& platforma: Joc::m_platforme)
-            if(this->intersectieX(platforma) && this->intersectieY(platforma)
-               && m_velocity > 0 
-               && spriteBounds.position.y + spriteBounds.size.y / 2.f - m_velocity < platforma.position.y)
-            {
-                m_sprite.setPosition({spriteBounds.position.x + spriteBounds.size.x / 2.f, platforma.position.y - spriteBounds.size.y / 2.f});
-                m_velocity = 0;
-                m_onGround = 1;
-                m_platformaCurenta = platforma;
-                break;
-            }
-    }
+        this->inCadere();
     this->animatieMers();
 }
 
@@ -132,4 +136,8 @@ bool Inamic::getPasnic()
 void Inamic::setPasnic(bool pasnic)
 {
     m_pasnic = pasnic;
+}
+bool Inamic::isOnGround()
+{
+    return m_onGround;
 }

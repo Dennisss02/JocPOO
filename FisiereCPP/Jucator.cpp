@@ -294,3 +294,7 @@ void Jucator::setPlatforma(sf::FloatRect platforma)
 {
     m_platformaCurenta = platforma;
 }
+sf::FloatRect Jucator::getPlatformaCurenta()
+{
+    return m_platformaCurenta;
+}

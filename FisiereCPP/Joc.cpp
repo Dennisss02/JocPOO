@@ -13,6 +13,9 @@ Joc::Joc()
     m_jucator = new Jucator();
     m_inamic = new Inamic();
     m_ajutor = new Ajutor();
+    
+    m_ceasHint = new sf::Clock();
+    m_ceasHint->reset();
 }
 
 void Joc::initWindow()
@@ -24,8 +27,10 @@ void Joc::initFundal()
 {
     sf::Texture texturaFundal("pictures\\Fundal.png");
     sf::Texture texturaLumina("pictures\\Lumina.png");
+    sf::Texture texturaVictorie("pictures\\Comoara.png");
     m_fundal->setSpriteFundal(texturaFundal);
     m_fundal->setSpriteLumina(texturaLumina);
+    m_fundal->setSpriteVictorie(texturaVictorie);
     m_fundal->setScale({(float)m_window->getSize().x / m_fundal->getX(), 
                         (float)m_window->getSize().y / m_fundal->getY()});
 }
@@ -69,6 +74,9 @@ void Joc::initAjutor()
     m_ajutor->setTextura(texturaAjutor);
     m_ajutor->Initializare();
     m_ajutor->setPosition({1092.f, 475.f});
+    m_ajutor->initHint();
+    m_ajutor->setBubbleScale({(float)m_window->getSize().x / m_fundal->getX(), 
+                              (float)m_window->getSize().y / m_fundal->getY()});
 }
 void Joc::adaugaObiectInteractiv(std::string caleImagine)
 {
@@ -155,14 +163,32 @@ void Joc::drawLumina()
     m_window->draw(m_fundal->getSpriteLumina());
 }
 
+void Joc::afiseazaHint()
+{
+    m_window->draw(m_ajutor->getSpriteHint());
+    m_window->draw(m_ajutor->afiseazaHint());
+    if(m_ceasHint->getElapsedTime().asSeconds() >= 4.f)
+    {
+        m_ceasHint->reset();
+        m_afHint = 0;
+    }
+}
+
+void Joc::resetStatic()
+{
+    m_platforme.clear();
+    m_obiecte.clear();
+    m_pasi.clear();
+    m_pasi.resize(5, 0);
+    Obiect::m_cntInventar = 0;
+}
 void Joc::Restart()
 {
-    sf::Font fontRestart("Silkscreen\\slkscr.ttf");
+    sf::Font fontRestart("Silkscreen\\slkscrb.ttf");
     sf::Text textRestart(fontRestart);
-    textRestart.setString("Ai pierdut... :(");
+    textRestart.setString("Ai pierdut...");
     textRestart.setCharacterSize(60);
     textRestart.setFillColor(sf::Color::Black);
-    textRestart.setStyle(sf::Text::Bold);
     textRestart.setOutlineColor(sf::Color::White);
     textRestart.setOutlineThickness(4.f);
     textRestart.setOrigin({textRestart.getGlobalBounds().size.x / 2.f, textRestart.getGlobalBounds().size.y / 2.f});
@@ -171,13 +197,25 @@ void Joc::Restart()
 
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::R))
     {
-        m_platforme.clear();
-        m_obiecte.clear();
-        m_pasi.clear();
-        m_pasi.resize(5, 0);
-        Obiect::m_cntInventar = 0;
+        this->resetStatic();
         this->Initializare();
     }
+}
+
+void Joc::Victorie()
+{
+    sf::Font fontVictorie("Silkscreen\\slkscrb.ttf");
+    sf::Text textVictorie(fontVictorie);
+    textVictorie.setString("Ai castigat!!!");
+    textVictorie.setCharacterSize(60);
+    textVictorie.setFillColor(sf::Color::Black);
+    textVictorie.setOutlineColor(sf::Color::White);
+    textVictorie.setOutlineThickness(4.f);
+    textVictorie.setOrigin({textVictorie.getGlobalBounds().size.x / 2.f, textVictorie.getGlobalBounds().size.y / 2.f});
+    textVictorie.setPosition({m_window->getSize().x / 2.f, m_window->getSize().y / 2.f});
+    
+    m_window->draw(m_fundal->getSpriteVictorie());
+    m_window->draw(textVictorie);
 }
 
 void Joc::Run()
@@ -190,35 +228,70 @@ void Joc::Run()
             m_window->close();
         }
 
-        m_ajutor->animatieIdle();
-
         m_window->clear(sf::Color::White);
-        this->drawFundal();
-        this->drawObiecte();
-        this->drawAjutor();
-        this->drawInamic();
-        this->drawJucator();
-        this->drawLumina();
-        if(m_jucator->esteLanga(m_inamic) && !m_inamic->getPasnic())
-            this->Restart();
+
+        if(std::abs(m_jucator->getSprite().getGlobalBounds().position.x - 1272.f) < 30.f
+           && m_jucator->getPlatformaCurenta() == m_platforme[5])
+            m_victorie = 1;
+
+        if(m_victorie == 1)
+            this->Victorie();
         else
         {
-            m_jucator->Control();
-            m_jucator->interactiuneObiecte();
-            if(m_pasi[2] == 1 && m_pasi[4] == 0 && !m_inamic->esteLanga(m_obiecte[2]))
-                m_inamic->mergiLa(m_obiecte[2]);
-            else
-                m_inamic->animatieIdle();
-            if(m_pasi[3] == 1)
-                m_fundal->schimbaLumina();
-            if(m_pasi[4] == 1 && !m_inamic->esteLanga(m_obiecte[6]))
+            m_ajutor->animatieIdle();
+
+            this->drawFundal();
+            this->drawObiecte();
+            
+            if(m_jucator->esteLanga(m_inamic) && !m_inamic->getPasnic())
             {
-                m_inamic->mergiLa(m_obiecte[6]);
-                if(m_inamic->esteLanga(m_obiecte[6]))
-                {
-                    m_inamic->setPasnic(1);
+                this->Restart();
+                m_jucator->animatieIdle();
+                m_inamic->animatieIdle();
+                this->drawAjutor();
+                this->drawInamic();
+                this->drawJucator();
+                this->drawLumina();
+            }
+            else
+            {
+                m_jucator->Control();
+                m_jucator->interactiuneObiecte();
+                if(m_pasi[2] == 1 && m_pasi[4] == 0 && !m_inamic->esteLanga(m_obiecte[2]))
+                    m_inamic->mergiLa(m_obiecte[2]);
+                else
                     m_inamic->animatieIdle();
+                if(m_pasi[3] == 1)
+                    m_fundal->schimbaLumina();
+                if(m_pasi[4] == 1 && !m_inamic->esteLanga(m_obiecte[6]))
+                {
+                    m_inamic->mergiLa(m_obiecte[6]);
+                    if(m_inamic->esteLanga(m_obiecte[6]))
+                    {
+                        m_inamic->setPasnic(1);
+                        m_inamic->animatieIdle();
+                    }
                 }
+                else
+                    if(m_inamic->esteLanga(m_obiecte[6]) && !m_inamic->isOnGround())
+                        m_inamic->inCadere();
+                if(sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
+                {
+                    sf::Vector2f mousePos = m_window->mapPixelToCoords(sf::Mouse::getPosition(*m_window));
+
+                    if(m_ajutor->getSprite().getGlobalBounds().contains(mousePos))
+                    {
+                        m_afHint = 1;
+                        m_ceasHint->start();
+                    }
+                }
+                if(m_afHint == 1)
+                    this->afiseazaHint();
+
+                this->drawAjutor();
+                this->drawInamic();
+                this->drawJucator();
+                this->drawLumina();
             }
         }
         m_window->display();

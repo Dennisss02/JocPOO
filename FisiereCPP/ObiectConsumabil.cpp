@@ -1,5 +1,10 @@
 #include "..\\FisiereH\\ObiectConsumabil.h"
 
+Obiect* ObiectConsumabil::clone() const
+{
+    return new ObiectConsumabil(*this);
+}
+
 void ObiectConsumabil::Interactioneaza()
 {
     m_vizibil = 0;

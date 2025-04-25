@@ -1,5 +1,10 @@
 #include "..\\FisiereH\\ObiectInteractiv.h"
 
+Obiect* ObiectInteractiv::clone() const
+{
+    return new ObiectInteractiv(*this);
+}
+
 void ObiectInteractiv::setTextura(sf::Texture& textura)
 {
     m_textura = textura;
