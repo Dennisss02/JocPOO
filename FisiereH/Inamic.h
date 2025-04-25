@@ -22,10 +22,12 @@ public:
     bool intersectieX(sf::FloatRect platforma);
     bool intersectieY(sf::FloatRect platforma);
     void onGround();
+    void inCadere();
     bool esteLanga(Obiect* obiect);
     void mergiLa(Obiect* obiect);
     bool getPasnic();
     void setPasnic(bool pasnic);
+    bool isOnGround();
 };
 
 #endif

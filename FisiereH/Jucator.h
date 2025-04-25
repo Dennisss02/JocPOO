@@ -24,6 +24,7 @@ public:
     void setViteza(float viteza);
     void setVelocity(float velocity);
     void setPlatforma(sf::FloatRect platforma);
+    sf::FloatRect getPlatformaCurenta();
     bool intersectieX(sf::FloatRect platforma);
     bool intersectieY(sf::FloatRect platforma);
     void coliziuneTop(sf::FloatRect platforma);

@@ -14,6 +14,7 @@ public:
     friend class Joc;
 
     Obiect();
+    virtual Obiect* clone() const = 0;
     const sf::Sprite& getSprite();
     virtual void setTextura(sf::Texture& textura);
     void setPosition(sf::Vector2f vector);

@@ -6,6 +6,7 @@
 class ObiectInteractiv: public Obiect
 {
 public:
+    Obiect* clone() const;
     void setTextura(sf::Texture& textura);
     void Interactioneaza();
 };

@@ -20,10 +20,14 @@ private:
     static std::vector<sf::FloatRect> m_platforme;
     static std::vector<Obiect*> m_obiecte;
     static std::vector<bool> m_pasi;
+    sf::Clock* m_ceasHint;
+    bool m_afHint = 0;
+    bool m_victorie = 0;
 
 public:
     friend class Jucator;
     friend class Inamic;
+    friend class Ajutor;
 
     Joc();
     void initWindow();
@@ -44,7 +48,12 @@ public:
     void drawObiecte();
     inline void drawLumina();
 
+    void afiseazaHint();
+
+    static void resetStatic();
     void Restart();
+
+    void Victorie();
 
     void Run();
 
