@@ -12,6 +12,8 @@ public:
     void Interactioneaza();
     void Afiseaza();
     bool getVizibil();
+
+    static void Aranjeaza();
 };
 
 #endif

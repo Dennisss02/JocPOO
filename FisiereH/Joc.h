@@ -29,6 +29,8 @@ public:
     friend class Inamic;
     friend class Ajutor;
 
+    friend class ObiectConsumabil;
+
     Joc();
     void initWindow();
     void initFundal();
