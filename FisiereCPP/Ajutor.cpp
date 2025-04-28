@@ -7,10 +7,10 @@ Ajutor::Ajutor(): m_texturaHint("pictures\\Bubble.png"), m_spriteHint(m_texturaH
 
 void Ajutor::initHint()
 {
-    sf::FloatRect spriteBounds = m_sprite.getGlobalBounds();
+    sf::Vector2f spritePosition = m_sprite.getPosition();
     float xB, yB;
-    xB = spriteBounds.position.x - spriteBounds.size.x / 2.f - 188.f;
-    yB = spriteBounds.position.y - spriteBounds.size.y / 2.f - 40.f;
+    xB = spritePosition.x - 260.f;
+    yB = spritePosition.y - 108.f;
     m_spriteHint.setPosition({xB, yB});
 
     m_textHint.setCharacterSize(16.f);

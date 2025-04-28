@@ -1,4 +1,4 @@
-#include "..\\FisiereH\\ObiectConsumabil.h"
+#include "..\\FisiereH\\Joc.h"
 
 Obiect* ObiectConsumabil::clone() const
 {
@@ -16,4 +16,20 @@ void ObiectConsumabil::Afiseaza()
 bool ObiectConsumabil::getVizibil()
 {
     return m_vizibil;
+}
+
+void ObiectConsumabil::Aranjeaza()
+{
+    int k = 0;
+    for(Obiect* obiect: Joc::m_obiecte)
+    {
+        if(auto* ob = dynamic_cast<ObiectConsumabil*>(obiect))
+        {
+            if(ob->getVizibil())
+            {
+                ob->setPosition({50.f, 50.f + k * 92.f});
+                k++;
+            }
+        }
+    }
 }

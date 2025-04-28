@@ -101,8 +101,6 @@ void Joc::adaugaObiectConsumabil(std::string caleImagine)
     m_obiecte[n]->setScale(scale);
     sf::FloatRect obBounds = m_obiecte[n]->getSprite().getGlobalBounds();
     m_obiecte[n]->setOrigin({128.f, 128.f});
-    //m_obiecte[n]->setPosition({50.f, 50.f + Obiect::m_cntInventar * 92.f});
-    m_obiecte[n]->setPosition({50.f, 50.f});
     Obiect::m_cntInventar++;
 }
 void Joc::initObiecte()
@@ -119,6 +117,7 @@ void Joc::initObiecte()
     this->adaugaObiectConsumabil("pictures\\Cheie.png");
     this->adaugaObiectConsumabil("pictures\\Ranga.png");
     this->adaugaObiectConsumabil("pictures\\Carne.png");
+    ObiectConsumabil::Aranjeaza();
 }
 
 void Joc::Initializare()

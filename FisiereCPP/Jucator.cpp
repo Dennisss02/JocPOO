@@ -226,6 +226,7 @@ void Jucator::interactiuneObiecte()
                             p_ob->Interactioneaza();
                             ObiectConsumabil* ob = dynamic_cast<ObiectConsumabil*>(Joc::m_obiecte[4]);
                             ob->Afiseaza();
+                            ObiectConsumabil::Aranjeaza();
                             Joc::m_pasi[0] = 1;
                         }
                         break;
@@ -235,6 +236,7 @@ void Jucator::interactiuneObiecte()
                             p_ob->Interactioneaza();
                             ObiectConsumabil* ob = dynamic_cast<ObiectConsumabil*>(Joc::m_obiecte[4]);
                             ob->Interactioneaza();
+                            ObiectConsumabil::Aranjeaza();
                             Joc::m_pasi[1] = 1;
                             Joc::m_platforme.pop_back();
                         }
@@ -245,6 +247,7 @@ void Jucator::interactiuneObiecte()
                             p_ob->Interactioneaza();
                             ObiectConsumabil* ob = dynamic_cast<ObiectConsumabil*>(Joc::m_obiecte[5]);
                             ob->Afiseaza();
+                            ObiectConsumabil::Aranjeaza();
                             Joc::m_pasi[2] = 1;
                         }
                         break;
@@ -256,6 +259,7 @@ void Jucator::interactiuneObiecte()
                             ob->Interactioneaza();
                             ObiectConsumabil* obNou = dynamic_cast<ObiectConsumabil*>(Joc::m_obiecte[6]);
                             obNou->Afiseaza();
+                            ObiectConsumabil::Aranjeaza();
                             Joc::m_pasi[3] = 1;
                             break;
                         }
