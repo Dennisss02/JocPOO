@@ -1,7 +1,7 @@
 Bratu Denis - grupa 132
 2025
 
-   ℹ️ Informații generale:
+   ℹ️ Informații generale: \n
 ❕ Versiunea de SFML utilizată este 3.0.0;
 🎨 Grafica este realizată de mine.
 
