@@ -12,6 +12,7 @@ private:
     sf::Text m_textHint;
 public:
     Ajutor();
+    void setTexturaHint(sf::Texture& textura);
     void initHint();
     const sf::Sprite& getSpriteHint();
     void setBubbleScale(sf::Vector2f scale);

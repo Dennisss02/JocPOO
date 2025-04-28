@@ -8,6 +8,7 @@
 #include "Fundal.h"
 #include "ObiectInteractiv.h"
 #include "ObiectConsumabil.h"
+#include "ExceptieTextura.h"
 
 class Joc
 {
