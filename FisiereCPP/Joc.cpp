@@ -25,12 +25,45 @@ void Joc::initWindow()
 }
 void Joc::initFundal()
 {
-    sf::Texture texturaFundal("pictures\\Fundal.png");
-    sf::Texture texturaLumina("pictures\\Lumina.png");
-    sf::Texture texturaVictorie("pictures\\Comoara.png");
-    m_fundal->setSpriteFundal(texturaFundal);
-    m_fundal->setSpriteLumina(texturaLumina);
-    m_fundal->setSpriteVictorie(texturaVictorie);
+    try
+    {
+        sf::Texture texturaFundal;
+        if(!texturaFundal.loadFromFile("pictures\\Fundal.png"))
+            throw ExceptieTextura("pictures\\Fundal.png");
+        
+        m_fundal->setSpriteFundal(texturaFundal);
+    }
+    catch(const ExceptieTextura& e)
+    {
+        e.afiseazaEroare();
+    }
+
+    try
+    {
+        sf::Texture texturaLumina;
+        if(!texturaLumina.loadFromFile("pictures\\Lumina.png"))
+            throw ExceptieTextura("pictures\\Lumina.png");
+        
+        m_fundal->setSpriteLumina(texturaLumina);
+    }
+    catch(const ExceptieTextura& e)
+    {
+        e.afiseazaEroare();
+    }
+
+    try
+    {
+        sf::Texture texturaVictorie;
+        if(!texturaVictorie.loadFromFile("pictures\\Comoara.png"))
+            throw ExceptieTextura("pictures\\Comoara.png");
+        
+        m_fundal->setSpriteVictorie(texturaVictorie);
+    }
+    catch(const ExceptieTextura& e)
+    {
+        e.afiseazaEroare();
+    }
+    
     m_fundal->setScale({(float)m_window->getSize().x / m_fundal->getX(), 
                         (float)m_window->getSize().y / m_fundal->getY()});
 }
@@ -47,8 +80,19 @@ void Joc::initPlatforme()
 }
 void Joc::initJucator()
 {
-    sf::Texture texturaJucator("pictures\\Miti.png");
-    m_jucator->setTextura(texturaJucator);
+    try
+    {
+        sf::Texture texturaJucator;
+        if(!texturaJucator.loadFromFile("pictures\\Miti.png"))
+            throw ExceptieTextura("pictures\\Miti.png");
+        
+        m_jucator->setTextura(texturaJucator);
+    }
+    catch(const ExceptieTextura& e)
+    {
+        e.afiseazaEroare();
+    }
+
     m_jucator->Initializare();
     m_jucator->setPosition({250.f, 780.f});
     m_jucator->setOrientare(0);
@@ -59,8 +103,19 @@ void Joc::initJucator()
 }
 void Joc::initInamic()
 {
-    sf::Texture texturaInamic("pictures\\Badi.png");
-    m_inamic->setTextura(texturaInamic);
+    try
+    {
+        sf::Texture texturaInamic;
+        if(!texturaInamic.loadFromFile("pictures\\Badi.png"))
+            throw ExceptieTextura("pictures\\Badi.png");
+        
+        m_inamic->setTextura(texturaInamic);
+    }
+    catch(const ExceptieTextura& e)
+    {
+        e.afiseazaEroare();
+    }
+
     m_inamic->Initializare();
     m_inamic->setPosition({1100.f, 210.f});
     m_inamic->setOrientare(0);
@@ -70,10 +125,35 @@ void Joc::initInamic()
 }
 void Joc::initAjutor()
 {
-    sf::Texture texturaAjutor("pictures\\Flafi.png");
-    m_ajutor->setTextura(texturaAjutor);
+    try
+    {
+        sf::Texture texturaAjutor;
+        if(!texturaAjutor.loadFromFile("pictures\\Flafi.png"))
+            throw ExceptieTextura("pictures\\Flafi.png");
+        
+        m_ajutor->setTextura(texturaAjutor);
+    }
+    catch(const ExceptieTextura& e)
+    {
+        e.afiseazaEroare();
+    }
+    
     m_ajutor->Initializare();
     m_ajutor->setPosition({1092.f, 475.f});
+
+    try
+    {
+        sf::Texture texturaHint;
+        if(!texturaHint.loadFromFile("pictures\\Bubble.png"))
+            throw ExceptieTextura("pictures\\Bubble.png");
+        
+        m_ajutor->setTexturaHint(texturaHint);
+    }
+    catch(const ExceptieTextura& e)
+    {
+        e.afiseazaEroare();
+    }
+
     m_ajutor->initHint();
     m_ajutor->setBubbleScale({(float)m_window->getSize().x / m_fundal->getX(), 
                               (float)m_window->getSize().y / m_fundal->getY()});
@@ -83,10 +163,22 @@ void Joc::adaugaObiectInteractiv(std::string caleImagine)
     sf::Vector2f scale = {(float)m_window->getSize().x / m_fundal->getX(), 
                           (float)m_window->getSize().y / m_fundal->getY()};
     
-    sf::Texture textura(caleImagine);
     m_obiecte.push_back(new ObiectInteractiv());
     int n = m_obiecte.size() - 1;
-    m_obiecte[n]->setTextura(textura);
+
+    try
+    {
+        sf::Texture texturaObiect;
+        if(!texturaObiect.loadFromFile(caleImagine))
+            throw ExceptieTextura(caleImagine);
+        
+        m_obiecte[n]->setTextura(texturaObiect);
+    }
+    catch(const ExceptieTextura& e)
+    {
+        e.afiseazaEroare();
+    }
+
     m_obiecte[n]->setScale(scale);
 }
 void Joc::adaugaObiectConsumabil(std::string caleImagine)
@@ -94,10 +186,24 @@ void Joc::adaugaObiectConsumabil(std::string caleImagine)
     sf::Vector2f scale = {(float)m_window->getSize().x / m_fundal->getX(), 
                           (float)m_window->getSize().y / m_fundal->getY()};
     
-    sf::Texture textura(caleImagine);
     m_obiecte.push_back(new ObiectConsumabil());
     int n = m_obiecte.size() - 1;
-    m_obiecte[n]->setTextura(textura);
+
+    sf::Texture textura(caleImagine);
+    
+    try
+    {
+        sf::Texture texturaObiect;
+        if(!texturaObiect.loadFromFile(caleImagine))
+            throw ExceptieTextura(caleImagine);
+        
+        m_obiecte[n]->setTextura(texturaObiect);
+    }
+    catch(const ExceptieTextura& e)
+    {
+        e.afiseazaEroare();
+    }
+
     m_obiecte[n]->setScale(scale);
     sf::FloatRect obBounds = m_obiecte[n]->getSprite().getGlobalBounds();
     m_obiecte[n]->setOrigin({128.f, 128.f});
@@ -117,7 +223,6 @@ void Joc::initObiecte()
     this->adaugaObiectConsumabil("pictures\\Cheie.png");
     this->adaugaObiectConsumabil("pictures\\Ranga.png");
     this->adaugaObiectConsumabil("pictures\\Carne.png");
-    ObiectConsumabil::Aranjeaza();
 }
 
 void Joc::Initializare()

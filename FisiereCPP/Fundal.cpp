@@ -1,6 +1,6 @@
 #include "..\\FisiereH\\Fundal.h"
 
-Fundal::Fundal(): m_texturaFundal("pictures\\patratAlb.png"), m_spriteFundal(m_texturaFundal), m_texturaLumina("pictures\\patratAlb.png"), m_spriteLumina(m_texturaLumina), m_texturaVictorie("pictures\\patratAlb.png"), m_spriteVictorie(m_texturaVictorie){}
+Fundal::Fundal(): m_texturaFundal(sf::Vector2u(200, 200)), m_spriteFundal(m_texturaFundal), m_texturaLumina(sf::Vector2u(200, 200)), m_spriteLumina(m_texturaLumina), m_texturaVictorie(sf::Vector2u(200, 200)), m_spriteVictorie(m_texturaVictorie){}
 
 void Fundal::setSpriteFundal(sf::Texture& textura)
 {

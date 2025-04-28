@@ -2,7 +2,7 @@
 
 int Obiect::m_cntInventar = 0;
 
-Obiect::Obiect(): m_textura("pictures\\patratAlb.png"), m_sprite(m_textura){}
+Obiect::Obiect(): m_textura(sf::Vector2u(200, 200)), m_sprite(m_textura){}
 
 const sf::Sprite& Obiect::getSprite()
 {

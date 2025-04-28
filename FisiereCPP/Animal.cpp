@@ -1,6 +1,6 @@
 #include "..\\FisiereH\\Animal.h"
 
-Animal::Animal() : m_textura("pictures\\patratAlb.png"), m_sprite(m_textura)
+Animal::Animal() : m_textura(sf::Vector2u(200, 200)), m_sprite(m_textura)
 {
     m_orientare = 0;
     m_frameIdle = 0;

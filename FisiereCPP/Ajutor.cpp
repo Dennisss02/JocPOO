@@ -1,8 +1,14 @@
 #include "..\\FisiereH\\Joc.h"
 
-Ajutor::Ajutor(): m_texturaHint("pictures\\Bubble.png"), m_spriteHint(m_texturaHint), m_fontHint("Silkscreen\\slkscr.ttf"), m_textHint(m_fontHint)
+Ajutor::Ajutor(): m_texturaHint(sf::Vector2u(200, 200)), m_spriteHint(m_texturaHint), m_fontHint("Silkscreen\\slkscr.ttf"), m_textHint(m_fontHint)
 {
     m_timpAnimatieIdle = 1.f;
+}
+
+void Ajutor::setTexturaHint(sf::Texture& textura)
+{
+    m_texturaHint = textura;
+    m_spriteHint.setTexture(m_texturaHint, true);
 }
 
 void Ajutor::initHint()
