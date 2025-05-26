@@ -2,8 +2,9 @@
 
 int main()
 {
-    Joc joc;
-    joc.Initializare();
-    joc.Run();
+    Joc* joc;
+    joc = Joc::getInstanta();
+    joc->Initializare();
+    joc->Run();
     return 0;
 }
