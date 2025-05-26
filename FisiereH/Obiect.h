@@ -2,6 +2,7 @@
 #define OBIECT_H
 
 #include <SFML/Graphics.hpp>
+#include "ExceptieTextura.h"
 
 class Obiect
 {
