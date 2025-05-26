@@ -1,5 +1,7 @@
 #include "..\\FisiereH\\Joc.h"
 
+Joc* Joc::Instanta = NULL;
+
 std::vector<sf::FloatRect> Joc::m_platforme;
 std::vector<Obiect*> Joc::m_obiecte;
 std::vector<bool> Joc::m_pasi(5, 0);
@@ -7,15 +9,23 @@ std::vector<bool> Joc::m_pasi(5, 0);
 Joc::Joc()
 {
     m_window = new sf::RenderWindow(sf::VideoMode({(unsigned int)1496, (unsigned int)850}), "Goana dupa pliculete!");
-    
     m_fundal = new Fundal();
 
-    m_jucator = new Jucator();
-    m_inamic = new Inamic();
-    m_ajutor = new Ajutor();
-    
+    /*
+    m_jucator = new Entitate<Jucator>();
+    m_inamic = new Entitate<Inamic>();
+    m_ajutor = new Entitate<Ajutor>();
+    */
+
     m_ceasHint = new sf::Clock();
     m_ceasHint->reset();
+}
+
+Joc* Joc::getInstanta()
+{
+    if(Joc::Instanta == NULL)
+        Instanta = new Joc();
+    return Joc::Instanta;
 }
 
 void Joc::initWindow()
@@ -158,6 +168,7 @@ void Joc::initAjutor()
     m_ajutor->setBubbleScale({(float)m_window->getSize().x / m_fundal->getX(), 
                               (float)m_window->getSize().y / m_fundal->getY()});
 }
+/*
 void Joc::adaugaObiectInteractiv(std::string caleImagine)
 {
     sf::Vector2f scale = {(float)m_window->getSize().x / m_fundal->getX(), 
@@ -181,6 +192,7 @@ void Joc::adaugaObiectInteractiv(std::string caleImagine)
 
     m_obiecte[n]->setScale(scale);
 }
+*/
 void Joc::adaugaObiectConsumabil(std::string caleImagine)
 {
     sf::Vector2f scale = {(float)m_window->getSize().x / m_fundal->getX(), 
@@ -188,8 +200,6 @@ void Joc::adaugaObiectConsumabil(std::string caleImagine)
     
     m_obiecte.push_back(new ObiectConsumabil());
     int n = m_obiecte.size() - 1;
-
-    sf::Texture textura(caleImagine);
     
     try
     {
@@ -211,6 +221,7 @@ void Joc::adaugaObiectConsumabil(std::string caleImagine)
 }
 void Joc::initObiecte()
 {
+    /*
     this->adaugaObiectInteractiv("pictures\\Cutii.png");
     m_obiecte[0]->setPosition({502.f, 664.f});
     this->adaugaObiectInteractiv("pictures\\Trapa.png");
@@ -219,6 +230,19 @@ void Joc::initObiecte()
     m_obiecte[2]->setPosition({504.f, 390.f});
     this->adaugaObiectInteractiv("pictures\\Cufar.png");
     m_obiecte[3]->setPosition({789.f, 729.f});
+    */
+
+    sf::Vector2f scale = {(float)m_window->getSize().x / m_fundal->getX(), 
+                          (float)m_window->getSize().y / m_fundal->getY()};
+    
+    m_obiecte.push_back(ObiectInteractiv::creeazaCutie({549.f, 712.f}));
+    m_obiecte[0]->setScale(scale);
+    m_obiecte.push_back(ObiectInteractiv::creeazaTrapa({1301.f, 464.f}));
+    m_obiecte[1]->setScale(scale);
+    m_obiecte.push_back(ObiectInteractiv::creeazaVaza({551.f, 438.f}));
+    m_obiecte[2]->setScale(scale);
+    m_obiecte.push_back(ObiectInteractiv::creeazaCufar({835.5f, 777.f}));
+    m_obiecte[3]->setScale(scale);
 
     this->adaugaObiectConsumabil("pictures\\Cheie.png");
     this->adaugaObiectConsumabil("pictures\\Ranga.png");
@@ -240,6 +264,14 @@ void Joc::drawFundal()
 {
     m_window->draw(m_fundal->getSpriteFundal());
 }
+
+template<class T>
+void drawEntitate(sf::RenderWindow* window, T ob)
+{
+    window->draw(ob->getSprite());
+}
+
+/*
 void Joc::drawJucator()
 {
     m_window->draw(m_jucator->getSprite());
@@ -252,6 +284,8 @@ void Joc::drawAjutor()
 {
     m_window->draw(m_ajutor->getSprite());
 }
+*/
+
 void Joc::drawObiecte()
 {
     for(Obiect* obiect: m_obiecte)
@@ -259,7 +293,7 @@ void Joc::drawObiecte()
         if(auto* ob = dynamic_cast<ObiectConsumabil*>(obiect))
             if(ob->getVizibil() == 0)
                 continue;
-        m_window->draw(obiect->getSprite());
+        drawEntitate(m_window, obiect);
     }
 }
 void Joc::drawLumina()
@@ -334,7 +368,7 @@ void Joc::Run()
 
         m_window->clear(sf::Color::White);
 
-        if(std::abs(m_jucator->getSprite().getGlobalBounds().position.x - 1272.f) < 30.f
+        if(std::abs(m_jucator->getSprite().getGlobalBounds().position.x - 1300.f) < 30.f
            && m_jucator->getPlatformaCurenta() == m_platforme[5])
             m_victorie = 1;
 
@@ -352,9 +386,9 @@ void Joc::Run()
                 this->Restart();
                 m_jucator->animatieIdle();
                 m_inamic->animatieIdle();
-                this->drawAjutor();
-                this->drawInamic();
-                this->drawJucator();
+                drawEntitate(m_window, m_ajutor);
+                drawEntitate(m_window, m_inamic);
+                drawEntitate(m_window, m_jucator);
                 this->drawLumina();
             }
             else
@@ -392,9 +426,9 @@ void Joc::Run()
                 if(m_afHint == 1)
                     this->afiseazaHint();
 
-                this->drawAjutor();
-                this->drawInamic();
-                this->drawJucator();
+                drawEntitate(m_window, m_ajutor);
+                drawEntitate(m_window, m_inamic);
+                drawEntitate(m_window, m_jucator);
                 this->drawLumina();
             }
         }
@@ -406,9 +440,11 @@ Joc::~Joc()
 {
     delete m_window;
     delete m_fundal;
+    /*
     delete m_jucator;
     delete m_inamic;
     delete m_ajutor;
+    */
     for(Obiect* obiect: m_obiecte)
         delete obiect;
 }
