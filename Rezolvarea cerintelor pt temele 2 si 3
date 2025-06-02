@@ -1,0 +1,18 @@
+Proiect 2 - rezolvarea cerințelor
+- separarea codului în fișiere header și surse
+- moșteniri: Animal - Jucător, Inamic, Ajutor
+- funcții virtuale:
+-- utilizarea funcțiilor virtuale pure (clasa Obiect abstractă)
+-- utilizarea pointerilor ca atribute în clasa Joc (Fundal, Jucator, Inamic, Ajutor)
+- metoda clone() în clasele Obiect -> ObiectInteractiv și ObiectConsumabil
+- upcast prin atribut de tip pointer la clasă de bază (vector<Obiect*> obiecte)
+- clasa ExceptieTextura moștenită din std::exception
+- funcții și atribute statice
+- STL: vector
+
+Proiect 3 - rezolvarea cerințelor
+- clasă template cu atribut de tip T (Entitate<T>)
+- funcție template (drawEntitate(sf::RenderWindow* window, T* obiect))
+- design patterns:
+-- singleton (clasa Joc)
+-- factory (in ObiectInteractiv se creeaza obiecte interactive cu texturi prestabilite)
